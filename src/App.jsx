@@ -65,8 +65,14 @@ function App() {
   ];
 
   const handleArrowButton = (value) => {
-    if (currentItem === 0 && value < 0) setCurrentItem(data.length); // Prevent going backward when at the first item
-    if (currentItem === data.length - 1 && value > 0) setCurrentItem(-1); // Prevent going forward when at the last item
+    if (currentItem === 0 && value < 0) {
+      alert("There is no previus data bro..");
+      return;
+    } // Prevent going backward when at the first item
+    if (currentItem === data.length - 1 && value > 0) {
+      alert("There is no next data bro..");
+      return;
+    } // Prevent going forward when at the last item
 
     setCurrentItem((prev) => prev + value); // Correctly update the state
   };
