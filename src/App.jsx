@@ -4,7 +4,6 @@ import { FaArrowRight } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
 
 function App() {
-  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef(null);
 
@@ -76,6 +75,25 @@ function App() {
 
     setCurrentItem((prev) => prev + value); // Correctly update the state
   };
+
+  //handle key event globally
+  useEffect(() => {
+    const handleKey = (event) => {
+      console.log(`key: ${event.key}`);
+
+      if (event.key === "Escape") {
+        setIsModalOpen(false);
+      } else if (event.ctrlKey && event.key === "c") {
+        setIsModalOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKey);
+
+    return () => {
+      window.addEventListener("keydown", handleKey);
+    };
+  }, []);
 
   return (
     <>
