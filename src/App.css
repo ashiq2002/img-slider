@@ -40,3 +40,36 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Slide in from the left */
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Slide in from the right */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Common styles for the animation */
+.image-slide {
+  animation-name: slideInRight;
+  position: relative;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+

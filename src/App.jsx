@@ -11,6 +11,8 @@ function App() {
     setIsModalOpen(true);
 
     setCurrentItem(data.findIndex((item) => item.image === value));
+    console.log(isModalOpen);
+    
   };
   const closeModal = () => setIsModalOpen(false);
 
@@ -29,6 +31,9 @@ function App() {
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
+
+    // autoSlide(); //start auto slider
+    
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -76,6 +81,23 @@ function App() {
     setCurrentItem((prev) => prev + value); // Correctly update the state
   };
 
+  // const sleep = (milSec)=> {
+  //     return new Promise((resolve)=> setTimeout(resolve, milSec));
+  // };
+
+  // const autoSlide = async ()=> {
+  //   console.log(isModalOpen);
+  //   if(isModalOpen === false) return;
+
+  //   while (isModalOpen === true) {
+      
+  //     console.log(`Current item: ${currentItem}`);
+  //     await sleep(3000);
+  //     setCurrentItem((prev) => prev === data.length -1 ? 0 : prev + 1);
+      
+  //   }
+  // }
+
   //handle key event globally
   useEffect(() => {
     const handleKey = (event) => {
@@ -94,6 +116,19 @@ function App() {
       window.addEventListener("keydown", handleKey);
     };
   }, []);
+
+  ///auto slider
+  useEffect(()=>{
+    if(!isModalOpen) return;
+
+    const interval = setInterval(() => {
+      setCurrentItem((prev)=> prev === data.length-1? 0 : prev + 1);
+      
+    }, 3000);
+
+    return ()=> clearInterval(interval);
+
+  }, [isModalOpen])
 
   return (
     <>
@@ -123,12 +158,12 @@ function App() {
                 {/* Left Arrow */}
                 <FaArrowLeft
                   onClick={() => handleArrowButton(Number(-1))}
-                  className="bg-blue-800 p-2 rounded-lg cursor-pointer hover:bg-blue-700 text-white w-8 h-8"
+                  className="bg-blue-800 p-2 rounded-lg cursor-pointer hover:bg-blue-700 text-white w-8 h-8 "
                 />
                 <img
                   src={data[currentItem].image}
                   alt=""
-                  className="h-52 w-52 object-cover rounded-lg"
+                  className="h-52 w-52 object-cover rounded-lg animate-slide-left"
                 />
                 {/* Right Arrow */}
                 <FaArrowRight
