@@ -3,6 +3,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
 
+import { motion, AnimatePresence } from "motion/react";
+
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef(null);
@@ -12,7 +14,6 @@ function App() {
 
     setCurrentItem(data.findIndex((item) => item.image === value));
     console.log(isModalOpen);
-    
   };
   const closeModal = () => setIsModalOpen(false);
 
@@ -33,7 +34,6 @@ function App() {
     }
 
     // autoSlide(); //start auto slider
-    
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -90,11 +90,11 @@ function App() {
   //   if(isModalOpen === false) return;
 
   //   while (isModalOpen === true) {
-      
+
   //     console.log(`Current item: ${currentItem}`);
   //     await sleep(3000);
   //     setCurrentItem((prev) => prev === data.length -1 ? 0 : prev + 1);
-      
+
   //   }
   // }
 
@@ -117,18 +117,21 @@ function App() {
     };
   }, []);
 
+  const [isSlide, setIsSlide] = useState(true);
+
   ///auto slider
-  useEffect(()=>{
-    if(!isModalOpen) return;
+  useEffect(() => {
+    if (!isModalOpen) return;
 
     const interval = setInterval(() => {
-      setCurrentItem((prev)=> prev === data.length-1? 0 : prev + 1);
-      
+      setIsSlide(true);
+      console.log(`Runing... ${isSlide}`);
+
+      setCurrentItem((prev) => (prev === data.length - 1 ? 0 : prev + 1));
     }, 3000);
 
-    return ()=> clearInterval(interval);
-
-  }, [isModalOpen])
+    return () => clearInterval(interval);
+  }, [isModalOpen, isSlide]);
 
   return (
     <>
@@ -160,11 +163,14 @@ function App() {
                   onClick={() => handleArrowButton(Number(-1))}
                   className="bg-blue-800 p-2 rounded-lg cursor-pointer hover:bg-blue-700 text-white w-8 h-8 "
                 />
-                <img
+
+                <motion.img
+                  key={data[currentItem].image}
                   src={data[currentItem].image}
-                  alt=""
-                  className="h-52 w-52 object-cover rounded-lg animate-slide-left"
+                  animate={{ rotateX: 245, rotateY: 170, rotateZ: -125}}
+                  className="h-52 w-52 object-cover rounded-lg overflow-hidden"
                 />
+
                 {/* Right Arrow */}
                 <FaArrowRight
                   onClick={() => handleArrowButton(Number(1))}
